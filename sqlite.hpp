@@ -125,11 +125,6 @@ public:
                           std::is_same_v<T, Blob>, "Unsupported type");
             return T();
         }
-        template<> int get<int>() const { return statement.getInt(index); }
-        template<> int64_t get<int64_t>() const { return statement.getInt64(index); }
-        template<> double get<double>() const { return statement.getDouble(index); }
-        template<> std::string get<std::string>() const { return statement.getString(index); }
-        template<> Blob get<Blob>() const { return statement.getBlob(index); }
 
         operator int() const { return statement.getInt(index); }
         operator int64_t() const { return statement.getInt64(index); }
@@ -301,3 +296,25 @@ inline bool operator&(SQLite::OpenFlags lhs, SQLite::OpenFlags rhs) {
 }
 
 std::string to_string(SQLite::DataType type);
+
+
+// specializations for the template SQLite::Column::get() function
+template<> inline int SQLite::Column::get<int>() const {
+    return statement.getInt(index);
+}
+
+template<> inline int64_t SQLite::Column::get<int64_t>() const {
+    return statement.getInt64(index);
+}
+
+template<> inline double SQLite::Column::get<double>() const {
+    return statement.getDouble(index);
+}
+
+template<> inline std::string SQLite::Column::get<std::string>() const {
+    return statement.getString(index);
+}
+
+template<> inline SQLite::Blob SQLite::Column::get<SQLite::Blob>() const {
+    return statement.getBlob(index);
+}
